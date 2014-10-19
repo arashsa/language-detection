@@ -10,12 +10,12 @@ class NGram():
     """
     A simple class for creating bigrams (should be modified to do variable length n-grams)
     """
-    def __init__(self, path):
+    def __init__(self, path, output):
         self.bigrams = {}
         self.total_words = 0
 
         self.read_path(path)
-        self.save_to_file = open('bigrams.txt', 'w')
+        self.save_to_file = open(output, 'w')
 
     def read_path(self, path):
         """
@@ -68,21 +68,20 @@ class NGram():
         for w, count in reversed(sorted_x.items()):
             print '{} {} : {}'.format(w[0], w[1], count)
 
-    def write_to_file(self, cutoff=1000):
+    def write_to_file(self, cutoff=10):
         """
         Writes the bigrams to file with a cutoff
         :param cutoff: how many items added to the bigrams.txt file
         :return:
         """
         sorted_x = collections.OrderedDict(sorted(self.bigrams.items(), key=lambda t: t[1]))
-        count = 1
         for w, total in reversed(sorted_x.items()):
-            if count > cutoff:
+            if total < cutoff:
                 break
-            self.save_to_file.write('{} {} : {:.3f}\n'.format(w[0], w[1], (float(total) / self.total_words) * 100))
-            count += 1
+            self.save_to_file.write('{} {} : {}, {:.3f}\n'.format(w[0], w[1], total,
+                                                              (float(total) / self.total_words) * 100))
         self.save_to_file.close()
 
-run = NGram('/Users/arashsaidi/Work/TextLab/Code/DUO_Corpus/Nynorsk/*')
+run = NGram('/Users/arashsaidi/Work/TextLab/Code/DUO_Corpus/Nynorsk/*', 'nn_bigrams.txt')
 # run.print_bigrams()
 run.write_to_file()
