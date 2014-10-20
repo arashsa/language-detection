@@ -68,7 +68,7 @@ class NGram():
         for w, count in reversed(sorted_x.items()):
             print '{} {} : {}'.format(w[0], w[1], count)
 
-    def write_to_file(self, cutoff=10):
+    def write_to_file(self, cutoff=100):
         """
         Writes the bigrams to file with a cutoff
         :param cutoff: how many items added to the bigrams.txt file
